@@ -10,7 +10,7 @@ y_train= pd.read_csv("y_train.csv")
 X_test= pd.read_csv("X_test.csv")
 y_test= pd.read_csv("y_test.csv")
 #%%
-print(y_test.shape(0))
+# y_test.reval(y_test.shape[0],)
 #%%
 
 #%%
@@ -20,8 +20,7 @@ modelList = [
     DecisionTreeRegressor(),
     GradientBoostingRegressor(),
     RandomForestRegressor(),
-    LinearRegression()
-]
+    LinearRegression()]
 
 def modeling(models, X_train,y_train, X_test, y_test):
     result = list()
