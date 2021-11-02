@@ -1,8 +1,8 @@
 #%%
+
 import pandas as pd
 import numpy as np
-import sklearn.linear_model
-from sklearn import linear_model
+
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, GradientBoostingRegressor, \
     RandomForestRegressor
 from sklearn.linear_model import SGDRegressor
