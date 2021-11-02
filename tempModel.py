@@ -23,7 +23,7 @@ from sklearn.metrics import mean_absolute_error
 # load the dataset
 from sklearn.tree import DecisionTreeRegressor
 
-dat = pd.read_csv("housing.csv")
+dat = pd.read_csv("Datasets/housing.csv")
 sns.set(font_scale=0.5)
 correlation = dat.corr()
 sns.heatmap(correlation, xticklabels=dat.columns, yticklabels=dat.columns, cmap="YlGnBu", annot=True, fmt='.2f')

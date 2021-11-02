@@ -5,6 +5,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from geopy.distance import geodesic
+from sklearn.preprocessing import LabelEncoder
 
 
 def correlationAnalysis(dat, name):
@@ -38,7 +39,8 @@ def variableImputation(dat):
 def locationVar(dat, city_lat_long, city_pop_data):
     combined = city_lat_long.merge(city_pop_data, left_on='Name', right_on='City', how='left')
     median_pop = combined['pop_april_1990'].median()
-    big_city = combined[combined["pop_april_1990"] > median_pop]
+    # big_city = combined[combined["pop_april_1990"] > median_pop]
+    big_city = combined
     results = list()
     for i in range(dat.shape[0]):
     # for i in range(100):
@@ -54,12 +56,15 @@ def locationVar(dat, city_lat_long, city_pop_data):
         results.append(result)
     print("city classfication done")
     dat['city'] = results
+    encoder = LabelEncoder()
+    dat['city'] = encoder.fit_transform(dat['city'])
+
     return dat
 
 def split(dat):
-    X = dat.drop(["outcome", "latitude", "longitude"], axis=1)
+    X = dat.drop(["outcome"], axis=1)
     y = dat['outcome']
-    # train test split
+    # train test spli
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
     return X_train, X_test, y_train, y_test
 
@@ -67,9 +72,9 @@ def split(dat):
 
 
 def main():
-    dat = pd.read_csv("housing.csv")
-    city_lat_long = pd.read_csv('cal_cities_lat_long.csv')
-    city_pop_data = pd.read_csv('cal_populations_city.csv')
+    dat = pd.read_csv("Datasets/housing.csv")
+    city_lat_long = pd.read_csv('Datasets/cal_cities_lat_long.csv')
+    city_pop_data = pd.read_csv('Datasets/cal_populations_city.csv')
 
 
     correlationAnalysis(dat,"Correlation for Initial Dataset")
@@ -80,6 +85,8 @@ def main():
     print("Correlation for imputed dataset")
     dat_location = locationVar(dat_noNA, city_lat_long, city_pop_data)
     print("Location Done")
+    correlationAnalysis(dat_location, "Correlation for Engineered Dataset")
+
 
     X_train, X_test, y_train, y_test = split(dat_location)
     print("Exporting to CSV")
