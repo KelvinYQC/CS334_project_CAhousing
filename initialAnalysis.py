@@ -10,8 +10,10 @@ y_train= pd.read_csv("y_train.csv")
 X_test= pd.read_csv("X_test.csv")
 y_test= pd.read_csv("y_test.csv")
 #%%
-# y_test.reval(y_test.shape[0],)
-#%%
+y_test = y_test.to_numpy()
+y_test = y_test.reshape(y_test.shape[0],)
+y_train = y_train.to_numpy()
+y_train = y_train.reshape(y_train.shape[0],)
 
 #%%
 
@@ -33,37 +35,8 @@ def modeling(models, X_train,y_train, X_test, y_test):
         row_index+=1
     return result
 
-
-
 performance = modeling(modelList, X_train,y_train, X_test, y_test)
 print(performance)
 # tune models
 
-
-
-
-
-
-
-
-
-#%%
-# xgb_model = xgb.XGBRegressor()
-# parameters = {
-#     "loss":["deviance"],
-#     "learning_rate": [0.01, 0.025, 0.05, 0.075, 0.1, 0.15, 0.2],
-#     "min_samples_split": np.linspace(0.1, 0.5, 12),
-#     "min_samples_leaf": np.linspace(0.1, 0.5, 12),
-#     "max_depth":[3,5,8],
-#     "max_features":["log2","sqrt"],
-#     "criterion": ["friedman_mse",  "mae"],
-#     "subsample":[0.5, 0.618, 0.8, 0.85, 0.9, 0.95, 1.0],
-#     "n_estimators":[10]
-#     }
-# #passing the scoring function in the GridSearchCV
-# clf = GridSearchCV(GradientBoostingClassifier(), parameters,refit=False,cv=5)
-#
-# clf.fit(X_train, y_train)
-#
-# y_pred = clf.predict(X_test)
 
