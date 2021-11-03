@@ -47,11 +47,11 @@ tunedResult.append((clf_dt.__class__.__name__, classifier_r2_score_dt))
 # %%
 # RandomForestRegressor
 rd = RandomForestRegressor()
-hyperparameters_rd = [{'bootstrap': [True, False],
-                       'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, None],
-                       'max_features': ['auto', 'sqrt'],
-                       'min_samples_leaf': range(1, 500, 50),
-                       'n_estimators': [200, 500, 800, 1200, 1400, 1700, 2000, 3000, 4000]}
+hyperparameters_rd = [{# 'bootstrap': [True, False],
+                       'max_depth': [10, 20, 30, 40, 50, None],
+                       # 'max_features': ['auto', 'sqrt'],
+                       'min_samples_leaf': range(1, 500, 100),
+                       'n_estimators': [100, 200, 500, 800]}
                       ]
 
 clf = GridSearchCV(rd, hyperparameters_rd, cv=10)
@@ -85,8 +85,8 @@ tunedResult.append((clf_rd.__class__.__name__, classifier_r2_score_rd))
 parameters = {
     "loss": ["deviance"],
     "learning_rate": [0.01, 0.025, 0.05, 0.075, 0.1, 0.15, 0.2],
-    "min_samples_split": np.linspace(0.1, 0.5, 12),
-    "min_samples_leaf": np.linspace(0.1, 0.5, 12),
+    "min_samples_split": np.linspace(0.1, 0.5, 5),
+    "min_samples_leaf": np.linspace(0.1, 0.5, 5),
     "max_depth": [3, 5, 8],
     "max_features": ["log2", "sqrt"],
     "criterion": ["friedman_mse", "mae"],
@@ -128,6 +128,7 @@ classifier_r2_score_gb = r2_score(y_test, y_pred)
 print((clf_gb.__class__.__name__, classifier_r2_score_gb))
 tunedResult.append((clf_gb.__class__.__name__, classifier_r2_score_gb))
 # %%
+# Xgboost
 parameters = {
     'learning_rate': [0.001, 0.01, 0.3, 0.5, 0.7, 1],
     'max_depth': [3, 5, 7, 10, 20, 30, 50],
