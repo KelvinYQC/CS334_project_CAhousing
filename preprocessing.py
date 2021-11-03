@@ -39,11 +39,10 @@ def variableImputation(dat):
 def locationVar(dat, city_lat_long, city_pop_data):
     combined = city_lat_long.merge(city_pop_data, left_on='Name', right_on='City', how='left')
     median_pop = combined['pop_april_1990'].median()
-    # big_city = combined[combined["pop_april_1990"] > median_pop]
-    big_city = combined
+    big_city = combined[combined["pop_april_1990"] > median_pop]
+    #big_city = combined
     results = list()
     for i in range(dat.shape[0]):
-    # for i in range(100):
         distance = float('inf')
         houseLocation = (dat.iloc[i,1], dat.iloc[i,0])
         result = "none"

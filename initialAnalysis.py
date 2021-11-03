@@ -4,6 +4,8 @@ from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.metrics import r2_score
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
+import xgboost as xgb
+
 
 X_train = pd.read_csv("X_train.csv")
 y_train= pd.read_csv("y_train.csv")
@@ -16,16 +18,16 @@ y_train = y_train.to_numpy()
 y_train = y_train.reshape(y_train.shape[0],)
 
 #%%
-
+result = list()
 MLA_compare = pd.DataFrame()
 modelList = [
     DecisionTreeRegressor(),
     GradientBoostingRegressor(),
     RandomForestRegressor(),
-    LinearRegression()]
+    LinearRegression(),
+    xgb.XGBRegressor()]
 
 def modeling(models, X_train,y_train, X_test, y_test):
-    result = list()
     row_index = 0
     for classifier in models:
         classifier.fit(X_train, y_train)
@@ -37,6 +39,5 @@ def modeling(models, X_train,y_train, X_test, y_test):
 
 performance = modeling(modelList, X_train,y_train, X_test, y_test)
 print(performance)
-# tune models
 
 
