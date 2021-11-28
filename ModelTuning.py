@@ -27,7 +27,7 @@ hyperparameters_dt = [{"splitter": ["best", "random"],
                        "max_features": ["auto", "log2", "sqrt", None]}]
 
 # dt_gridSearch = GridSearchCV(dt, hyperparameters_dt, cv=10)
-dt_gridSearch = RandomizedSearchCV(dt, hyperparameters_dt, n_iter=288, n_jobs=-1, cv=10, random_state=1)
+dt_gridSearch = RandomizedSearchCV(dt, hyperparameters_dt, n_iter=200, n_jobs=-1, cv=10, random_state=1)
 best_model_dt = dt_gridSearch.fit(X_train, y_train)
 print("decision tree tuned result")
 print(best_model_dt.best_estimator_)
@@ -53,11 +53,11 @@ hyperparameters_rd = [{'bootstrap': [True, False],
                        'max_depth': [10, 20, 30, 40, 50, None],
                        'max_features': ['auto', 'sqrt'],
                        'min_samples_leaf': range(1, 500, 100),
-                       'n_estimators': [100, 200, 500, 800]}
+                       'n_estimators': [100, 200, 500]}
                       ]
 
 # clf = GridSearchCV(rd, hyperparameters_rd, cv=10)
-clf = RandomizedSearchCV(rd, hyperparameters_rd, n_iter=500, n_jobs=-1, cv=10, random_state=1)
+clf = RandomizedSearchCV(rd, hyperparameters_rd, n_iter=100, n_jobs=-1, cv=5, random_state=1)
 
 best_model = clf.fit(X_train, y_train)
 print("random forest tuned result")
@@ -88,26 +88,22 @@ tunedResult.append((clf_rd.__class__.__name__, classifier_r2_score_rd))
 # %%
 # gradient boost
 parameters = {
-    "loss": ["deviance"],
-    "learning_rate": [0.0001,0.001, 0.01, 0.05, 0.1],
     # "min_samples_split": np.linspace(0.1, 0.5, 5),
     "min_samples_leaf": [1,10,50],
-    "max_depth": [3, 5, 8],
-    "max_features": ["log2", "sqrt"],
-    "criterion": ["friedman_mse", "mae"],
+    "max_depth": [1, 3, 5],
     # "subsample": [0.5, 0.618, 0.8, 0.85, 0.9, 0.95, 1.0],
-    'n_estimators': [10, 50, 100, 200, 500],
+    'n_estimators': [10, 50, 100, 200],
 }
+gb = GradientBoostingClassifier()
+
 # #passing the scoring function in the GridSearchCV
-# clf = GridSearchCV(GradientBoostingClassifier(), parameters, refit=False, cv=10)
-clf = RandomizedSearchCV(GradientBoostingClassifier, parameters, n_iter=500, n_jobs=-1, cv=10, random_state=1)
+# clf = GridSearchCV(GradientBoostingClassifier(), parameters, refit=False, cv=5)
+clf = RandomizedSearchCV(gb, parameters, n_iter=1, n_jobs=-1, cv=5, random_state=1)
 best_model = clf.fit(X_train, y_train)
 print("gradient boost tuned result")
 print(best_model.best_estimator_)
 parameterResult.append((clf.__class__.__name__, best_model.best_estimator_))
-
-
-
+# %%
 loss = best_model.best_estimator_.get_params()['loss']
 learning_rate = best_model.best_estimator_.get_params()['learning_rate']
 min_samples_split = best_model.best_estimator_.get_params()['min_samples_split']
@@ -136,16 +132,16 @@ tunedResult.append((clf_gb.__class__.__name__, classifier_r2_score_gb))
 # %%
 # Xgboost
 parameters = {
-    'learning_rate': [0.001, 0.01, 0.3, 0.5, 0.7, 1],
-    'max_depth': [3, 5, 7, 10, 20, 30, 50],
+    'learning_rate': [0.001, 0.01, 0.1],
+    'max_depth': [3, 5, 10, 20],
     # 'min_child_weight': [1, 3, 5, 7, 10, 20, 50, 100],
-    'subsample': [0.3, 0.5, 0.7],
+    # 'subsample': [0.3, 0.5, 0.7],
     # 'colsample_bytree': [0.5, 0.7],
-    'n_estimators': [100, 200, 500],
+    'n_estimators': [20, 100, 300],
     'objective': ['reg:squarederror', 'reg:squaredlogerror']
 }
 # #passing the scoring function in the GridSearchCV
-clf = GridSearchCV(xgb.XGBRegressor(), parameters, refit=False, cv=10)
+clf = GridSearchCV(xgb.XGBRegressor(), parameters, refit=False, cv=5)
 
 best_model = clf.fit(X_train, y_train)
 print("XGBoost tuned result")
