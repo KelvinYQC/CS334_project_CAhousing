@@ -136,7 +136,7 @@ parameters = {
     'learning_rate': [0.001, 0.01, 0.1],
     'max_depth': [3, 5, 10],
     # 'min_child_weight': [1, 3, 5, 7, 10, 20, 50, 100],
-    'subsample': [0.3, 0.5, 0.7],
+    #'subsample': [0.3, 0.5, 0.7],
     'colsample_bytree': [0.5, 0.7],
     'n_estimators': [20, 100, 300, 500]
 }
@@ -159,7 +159,7 @@ parameterResult.append((clf.__class__.__name__, clf.best_estimator_))
 learning_rate = clf.best_estimator_.get_params()['learning_rate']
 max_depth = clf.best_estimator_.get_params()['max_depth']
 min_child_weight = clf.best_estimator_.get_params()['min_child_weight']
-subsample = clf.best_estimator_.get_params()['subsample']
+#subsample = clf.best_estimator_.get_params()['subsample']
 colsample_bytree = clf.best_estimator_.get_params()['colsample_bytree']
 n_estimators = clf.best_estimator_.get_params()['n_estimators']
 # objective = clf.best_estimator_.get_params()['objective']
@@ -167,7 +167,7 @@ n_estimators = clf.best_estimator_.get_params()['n_estimators']
 XGB_clf = xgb.XGBRegressor(learning_rate=learning_rate,
                            max_depth=max_depth,
                            # min_child_weight=min_child_weight,
-                           subsample=subsample,
+                           #subsample=subsample,
                            colsample_bytree = colsample_bytree,
                            # colsample_bytree=colsample_bytree,
                            n_estimators=n_estimators,

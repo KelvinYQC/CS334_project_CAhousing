@@ -24,8 +24,7 @@ def correlationAnalysis(dat, name):
 
 
 def variableImputation(dat):
-    dat = dat.drop(columns=['households', 'total_rooms'])
-    dat.total_bedrooms.fillna(dat.total_bedrooms.median(), inplace=True)
+
     dat = pd.get_dummies(dat)
     dat.rename(columns={'ocean_proximity_<1H OCEAN': 'Ocean',
                         'ocean_proximity_INLAND': 'Inland',
