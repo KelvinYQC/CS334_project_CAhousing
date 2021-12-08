@@ -86,6 +86,8 @@ print((clf_rd.__class__.__name__, classifier_r2_score_rd))
 
 tunedResult.append((clf_rd.__class__.__name__, classifier_r2_score_rd))
 
+
+
 # %%
 # gradient boost
 parameters = {
@@ -105,24 +107,13 @@ print("gradient boost tuned result")
 print(best_model.best_estimator_)
 parameterResult.append((clf.__class__.__name__, best_model.best_estimator_))
 # %%
-loss = best_model.best_estimator_.get_params()['loss']
-learning_rate = best_model.best_estimator_.get_params()['learning_rate']
 min_samples_split = best_model.best_estimator_.get_params()['min_samples_split']
-min_samples_leaf = best_model.best_estimator_.get_params()['min_samples_leaf']
 max_depth = best_model.best_estimator_.get_params()['max_depth']
-max_features = best_model.best_estimator_.get_params()['max_features']
-criterion = best_model.best_estimator_.get_params()['criterion']
-subsample = best_model.best_estimator_.get_params()['subsample']
 n_estimators = best_model.best_estimator_.get_params()['n_estimators']
 
-gb_classifier_clf = GradientBoostingClassifier(loss=loss,
-                                               learning_rate=learning_rate,
+gb_classifier_clf = GradientBoostingClassifier(
                                                min_samples_split=min_samples_split,
-                                               min_samples_leaf=min_samples_leaf,
                                                max_depth=max_depth,
-                                               max_features=max_features,
-                                               criterion=criterion,
-                                               subsample=subsample,
                                                n_estimators=n_estimators
                                                )
 clf_gb = gb_classifier_clf.fit(X_train, y_train)
@@ -131,12 +122,15 @@ classifier_r2_score_gb = r2_score(y_test, y_pred)
 print((clf_gb.__class__.__name__, classifier_r2_score_gb))
 tunedResult.append((clf_gb.__class__.__name__, classifier_r2_score_gb))
 # %%
+
+
+
 # Xgboost
 parameters = {
     'learning_rate': [0.001, 0.01, 0.1],
     'max_depth': [3, 5, 10],
-    # 'min_child_weight': [1, 3, 5, 7, 10, 20, 50, 100],
-    #'subsample': [0.3, 0.5, 0.7],
+    'min_child_weight': [1, 3, 5, 7, 10, 20, 50, 100],
+    'subsample': [0.3, 0.5, 0.7],
     'colsample_bytree': [0.5, 0.7],
     'n_estimators': [20, 100, 300, 500]
 }
@@ -150,16 +144,15 @@ clf = GridSearchCV(estimator=xgbr,
                    param_grid=parameters,
                    verbose=1,
                    cv = 5)
-clf.fit(X_train, y_train)
+clf_xgb = clf.fit(X_train, y_train)
 print("Best parameters:", clf.best_params_)
-
-parameterResult.append((clf.__class__.__name__, clf.best_estimator_))
+parameterResult.append((clf_xgb.__class__.__name__, clf.best_estimator_))
 
 
 learning_rate = clf.best_estimator_.get_params()['learning_rate']
 max_depth = clf.best_estimator_.get_params()['max_depth']
 min_child_weight = clf.best_estimator_.get_params()['min_child_weight']
-#subsample = clf.best_estimator_.get_params()['subsample']
+subsample = clf.best_estimator_.get_params()['subsample']
 colsample_bytree = clf.best_estimator_.get_params()['colsample_bytree']
 n_estimators = clf.best_estimator_.get_params()['n_estimators']
 # objective = clf.best_estimator_.get_params()['objective']
@@ -167,7 +160,7 @@ n_estimators = clf.best_estimator_.get_params()['n_estimators']
 XGB_clf = xgb.XGBRegressor(learning_rate=learning_rate,
                            max_depth=max_depth,
                            # min_child_weight=min_child_weight,
-                           #subsample=subsample,
+                           subsample=subsample,
                            colsample_bytree = colsample_bytree,
                            # colsample_bytree=colsample_bytree,
                            n_estimators=n_estimators,

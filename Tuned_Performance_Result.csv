@@ -1,2 +1,4 @@
 0,1
+DecisionTreeRegressor,0.6572823989873593
+RandomForestRegressor,0.8311120101554066
 XGBRegressor,0.8373716341335516

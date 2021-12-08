@@ -1,0 +1,6 @@
+0,1
+DecisionTreeRegressor,64.12432736679375
+GradientBoostingRegressor,76.69059161722791
+RandomForestRegressor,81.69632904710033
+LinearRegression,63.49254720611379
+XGBRegressor,81.74623293621414

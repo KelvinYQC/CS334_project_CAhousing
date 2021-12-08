@@ -1,4 +1,7 @@
 0,1
+RandomizedSearchCV,"DecisionTreeRegressor(max_depth=6, max_features='auto', min_samples_leaf=41)"
+RandomizedSearchCV,"RandomForestRegressor(bootstrap=False, max_depth=30, max_features='sqrt',
+                      n_estimators=500)"
 GridSearchCV,"XGBRegressor(base_score=0.5, booster='gbtree', colsample_bylevel=1,
              colsample_bynode=1, colsample_bytree=0.7, enable_categorical=False,
              gamma=0, gpu_id=-1, importance_type=None,

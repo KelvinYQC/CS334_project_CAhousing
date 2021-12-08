@@ -32,7 +32,6 @@ def variableImputation(dat):
                         'ocean_proximity_NEAR BAY': 'Near_Bay',
                         'ocean_proximity_NEAR OCEAN': 'Near_Ocean',
                         'median_house_value': 'outcome',
-
                         }, inplace=True)
 
     return dat
@@ -74,23 +73,30 @@ def split(dat):
 
 
 def main():
+    # load datasets
     dat = pd.read_csv("Datasets/housing.csv")
     city_lat_long = pd.read_csv('Datasets/cal_cities_lat_long.csv')
     city_pop_data = pd.read_csv('Datasets/cal_populations_city.csv')
 
-
+    # initial correlation analysis
     correlationAnalysis(dat,"Correlation for Initial Dataset")
     print("Correlation for original dataset")
+    # replace NA value with median
     dat_noNA = variableImputation(dat)
     print("NA dropping and impuing Done")
+    # check correlation
     correlationAnalysis(dat_noNA, "Correlation for Imputed Dataset")
     print("Correlation for imputed dataset")
+
+    # add location variable
+
     dat_location = locationVar(dat_noNA, city_lat_long, city_pop_data)
     print("Location Done")
 
 
     correlationAnalysis(dat_location, "Correlation for Engineered Dataset")
 
+    # split full dataset
 
     X_train, X_test, y_train, y_test = split(dat_location)
     scaler = StandardScaler()
